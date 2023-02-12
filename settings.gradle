@@ -1,1 +1,1 @@
-include ':app', ':nodemediaclient'
+include ':nodemediaclient'

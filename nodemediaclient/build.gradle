@@ -1,12 +1,15 @@
-apply plugin: 'com.android.library'
+plugins {
+    id 'com.android.library'
+    id 'maven-publish'
+}
 
 android {
     compileSdkVersion 30
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion 16
         targetSdkVersion 30
-        versionCode 2805
-        versionName "2.8.5"
+        versionCode 2923
+        versionName "2.9.23"
     }
 
     buildTypes {
@@ -19,6 +22,19 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile "com.android.support:appcompat-v7:28.0.0"
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.github.NodeMedia'
+                artifactId = 'NodeMediaClient-Android'
+                version = '2.9.23'
+            }
+        }
+    }
 }

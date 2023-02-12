@@ -5,9 +5,7 @@ import android.content.Context;
 import android.graphics.SurfaceTexture;
 import android.os.Build;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -39,7 +37,7 @@ public class NodePlayerView extends FrameLayout implements SurfaceHolder.Callbac
     }
 
     interface RenderCallback {
-        void onSurfaceCreated(@NonNull Surface surface);
+        void onSurfaceCreated(Surface surface);
 
         void onSurfaceChanged(int width, int height);
 
@@ -65,6 +63,8 @@ public class NodePlayerView extends FrameLayout implements SurfaceHolder.Callbac
     private float mZoomScale = 1.0f;
     private boolean isSurfaceCreate = false;
     private boolean isMediaOverlay = false;
+    private int renderViewWidth = 0;
+    private int renderViewHeight = 0;
 
     public NodePlayerView(Context context) {
         super(context);
@@ -213,6 +213,14 @@ public class NodePlayerView extends FrameLayout implements SurfaceHolder.Callbac
                 }
                 fixWidth *= mZoomScale;
                 fixHeight *= mZoomScale;
+
+                if (renderViewWidth == fixWidth && renderViewHeight == fixHeight) {
+                    return;
+                }
+
+                renderViewWidth = fixWidth;
+                renderViewHeight = fixHeight;
+
                 FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
                         fixWidth,
                         fixHeight,

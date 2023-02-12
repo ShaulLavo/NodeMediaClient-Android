@@ -13,9 +13,24 @@ allprojects {
 }
 ```
 
+## 新版 gradle 7.2以上 ，settings.gradle
+```
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+
 ```
 dependencies {
-    compile 'com.github.NodeMedia:NodeMediaClient-Android:2.8.4'
+    implementation 'com.github.NodeMedia:NodeMediaClient-Android:2.9.23'
+    
+    
+}
 ```
 # 简单用法
 完整用例：[QLive源码](https://github.com/NodeMedia/QLive-Android)[(API文档)](https://github.com/NodeMedia/NodeMediaClient-Android/tree/2.x/docs)
@@ -42,10 +57,11 @@ dependencies {
 * 支持RTMP/HTTP-FLV视频解密播放
 
 ## NodePublisher
-* H.264/AAC 组合的RTMP协议音视频流发布
+* H.264/H.265+AAC 组合的RTMP协议音视频流发布
 * 全屏视频采集，1080p原画质缩放
 * NEON指令集优化H.264软件编码器，性能强劲，兼容性极强
 * H.264支持Baseline, Main, High profile
+* 支持H.264/H.265 硬编码
 * 支持手机旋转,横屏16:9，竖屏9:16分辨率自动输出横竖屏视频流
 * 支持4:3分辨率,1:1分辨率输出
 * NEON优化AAC软件编码器，极少CPU占用，支持LC和HE profile，音质还原效果好
@@ -71,7 +87,7 @@ fms, wowza, evostream, red5, crtmpserver, nginx-rtmp-module, srs, [Node-Media-Se
 基于Node.JS开发, 跨平台/高性能, 支持RTMP协议推流,RTMP/HTTP-FLV/WebSocket-FLV播放, 内置推流鉴权/播放防盗链/GOP缓存急速秒开.
 
 # 高级版
-- 硬件加速的视频解码器
+- 硬件加速的视频编解码器
 - 麦克风降噪
 - 平滑肌肤美颜
 - RTMP音视频内容加密
