@@ -39,12 +39,12 @@ public class NodePublisher implements NodeCameraView.NodeCameraViewCallback {
     private boolean isStartPreview;
 
     private int cameraId;
-    private int cameraOri; //读出的摄像头方向
-    private int customCameraOri; //自定义的摄像头方向，
+    private int cameraOri; // 读出的摄像头方向
+    private int customCameraOri; // 自定义的摄像头方向，
     private int cameraWidth;
     private int cameraHeight;
-    private int surfaceOri; //屏幕方向
-    private int videoOri; //自定义的视频方向
+    private int surfaceOri; // 屏幕方向
+    private int videoOri; // 自定义的视频方向
 
     private int surfaceWidth;
     private int surfaceHeight;
@@ -118,12 +118,12 @@ public class NodePublisher implements NodeCameraView.NodeCameraViewCallback {
                 public void onAudioFocusChange(int focusChange) {
                     if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT) {
                         for (NodePublisher publisher : publishers) {
-                            //麦克风静音
+                            // 麦克风静音
                             publisher.jniAudioMuted(true);
                         }
                     } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
                         for (NodePublisher publisher : publishers) {
-                            //麦克风恢复
+                            // 麦克风恢复
                             publisher.jniAudioMuted(false);
                         }
                     }
@@ -154,9 +154,9 @@ public class NodePublisher implements NodeCameraView.NodeCameraViewCallback {
     }
 
     private int getCameraOri() {
-        if(this.customCameraOri > -1) {
+        if (this.customCameraOri > -1) {
             return this.customCameraOri;
-        }else {
+        } else {
             return mNodeCameraView.getCameraOrientation();
         }
     }
@@ -276,6 +276,14 @@ public class NodePublisher implements NodeCameraView.NodeCameraViewCallback {
         return 0;
     }
 
+    public void muteMicrophone() {
+        jniAudioMuted(true);
+    }
+
+    public void unmuteMicrophone() {
+        jniAudioMuted(false);
+    }
+
     public void capturePicture(CapturePictureListener listener) {
         this.mCapturePictureListener = listener;
         jniRequestScreenShot();
@@ -290,7 +298,8 @@ public class NodePublisher implements NodeCameraView.NodeCameraViewCallback {
         jniEnableAudioRawCallback();
     }
 
-    public void setNodePublisherVideoTextureDelegate(NodePublisherVideoTextureDelegate nodePublisherVideoTextureDelegate) {
+    public void setNodePublisherVideoTextureDelegate(
+            NodePublisherVideoTextureDelegate nodePublisherVideoTextureDelegate) {
         this.mNodePublisherVideoTextureDelegate = nodePublisherVideoTextureDelegate;
         jniUseCustomFilter();
     }
@@ -377,7 +386,6 @@ public class NodePublisher implements NodeCameraView.NodeCameraViewCallback {
 
     public native int stop();
 
-
     @Override
     public void OnCreate() {
         if (this.mNodePublisherVideoTextureDelegate != null) {
@@ -394,7 +402,8 @@ public class NodePublisher implements NodeCameraView.NodeCameraViewCallback {
         this.cameraHeight = cameraHeight;
         this.isFrontCamera = mNodeCameraView.isFrontCamera();
         if (this.mNodePublisherVideoTextureDelegate != null) {
-            this.mNodePublisherVideoTextureDelegate.onChangeTextureCallback(this, this.isFrontCamera, this.cameraOri, this.surfaceOri);
+            this.mNodePublisherVideoTextureDelegate.onChangeTextureCallback(this, this.isFrontCamera, this.cameraOri,
+                    this.surfaceOri);
         }
         jniChangeGPUImage(cameraWidth, cameraHeight, surfaceWidth, surfaceHeight);
     }
@@ -402,7 +411,8 @@ public class NodePublisher implements NodeCameraView.NodeCameraViewCallback {
     @Override
     public void OnDraw(int textureId) {
         if (this.mNodePublisherVideoTextureDelegate != null) {
-            textureId = this.mNodePublisherVideoTextureDelegate.onDrawTextureCallback(this, textureId, this.cameraWidth, this.cameraHeight,
+            textureId = this.mNodePublisherVideoTextureDelegate.onDrawTextureCallback(this, textureId, this.cameraWidth,
+                    this.cameraHeight,
                     this.isFrontCamera, this.cameraOri);
         }
         jniDrawGPUImage(textureId);
